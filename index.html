@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ניהול העדפות דיוור | ביזגוב - איזור עסקי</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #F6F9FC;
+      --white:        #FFFFFF;
+      --navy:         #0C3058;
+      --blue:         #0068F5;
+      --border:       #B5C7E2;
+      --input-border: #8596AF;
+      --placeholder:  #52516F;
+      --warning:      #A35200;
+      --footer-text:  #8596AF;
+      --shadow-l1: 0px 2px 8px rgba(6,77,173,.10);
+      --shadow-l2: 0px 4px 12px rgba(6,77,173,.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--navy);
+      direction: rtl;
+    }
+
+    /* ---------- HEADER ---------- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      box-shadow: var(--shadow-l1);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .header-logo    { height: 28px; width: auto; }
+    .header-divider { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
+    .header-emblem  { height: 28px; width: auto; }
+
+    /* ---------- PAGE CONTENT WRAPPER ---------- */
+    .page-content {
+      max-width: 1064px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    /* ---------- BACK LINK ---------- */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--blue);
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 32px;
+      text-decoration: none;
+    }
+
+    /* ---------- SECTION HEADER ---------- */
+    .section-header { margin-bottom: 32px; }
+    .section-header h1 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .section-header p {
+      margin: 0 0 24px;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--navy);
+    }
+    .section-header hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ---------- TWO-COLUMN GRID ---------- */
+    .two-col {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      grid-template-rows: auto auto;
+      row-gap: 32px;
+      column-gap: 48px;
+    }
+
+    .col-businesses {
+      grid-column: 1;
+      grid-row: 1 / 3;
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-checkboxes {
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-actions {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ---------- BUSINESSES CARD ---------- */
+    .businesses-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 24px;
+      box-shadow: var(--shadow-l2);
+    }
+    .businesses-card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--navy);
+    }
+    .businesses-card hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 12px;
+    }
+    .biz-list { display: flex; flex-direction: column; gap: 10px; }
+    .biz-row  { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .biz-id   { font-size: 16px; font-weight: 400; color: var(--navy); white-space: nowrap; }
+    .biz-name { font-size: 16px; font-weight: 500; color: var(--navy); }
+
+    /* ---------- WARNING BOX ---------- */
+    .warning-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 16px;
+      color: var(--warning);
+    }
+    .warning-icon { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; }
+    .warning-box strong { font-weight: 700; }
+
+    /* ---------- FORM ELEMENTS ---------- */
+
+    .instruction-text {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--navy);
+    }
+
+    .checkboxes-group { display: flex; flex-direction: column; gap: 16px; }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--blue);
+      cursor: pointer;
+      flex-shrink: 0;
+      margin: 0;
+    }
+    .checkbox-label { font-size: 16px; font-weight: 400; color: var(--navy); }
+    .checkbox-label strong { font-weight: 500; }
+
+    /* Dropdown */
+    .dropdown-group { display: flex; flex-direction: column; gap: 8px; }
+    .field-label {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--navy);
+    }
+    .select-wrapper { position: relative; }
+    .select-wrapper select {
+      width: 100%;
+      padding: 12px 16px;
+      padding-left: 40px;
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      background: var(--white);
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--placeholder);
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      direction: rtl;
+    }
+    .select-wrapper select:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+    .select-wrapper::after {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--input-border);
+      pointer-events: none;
+    }
+
+    /* Primary CTA button */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 12px 24px;
+      background: var(--blue);
+      color: #F5F9FF;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn-primary:hover { opacity: .88; }
+
+    /* ---------- SUCCESS STATE ---------- */
+    #state-success { display: none; }
+
+    .success-row {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    .success-text {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: flex-end;
+      text-align: right;
+    }
+    .success-text h1 { margin: 0; font-size: 24px; font-weight: 700; color: var(--navy); }
+    .success-text p  { margin: 0; font-size: 16px; font-weight: 400; color: var(--navy); }
+    .success-illustration {
+      width: 440px;
+      max-width: 46%;
+      height: auto;
+      flex-shrink: 0;
+    }
+
+    /* Secondary (outline) button */
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 24px;
+      background: var(--white);
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      border-radius: 8px;
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { background: #F0F6FF; }
+
+    /* ---------- FOOTER ---------- */
+    .site-footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 8px 24px;
+    }
+    .footer-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .footer-copy { font-size: 14px; font-weight: 400; color: var(--footer-text); }
+    .footer-logo { height: 20px; width: auto; opacity: .55; }
+
+    /* ========== RESPONSIVE ========== */
+
+    @media (max-width: 1279px) {
+      .page-content { max-width: 824px; padding: 32px 32px 48px; }
+      .two-col {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .form-checkboxes { order: 1; }
+      .col-businesses  { order: 2; }
+      .form-actions    { order: 3; }
+      .success-row { flex-direction: column; align-items: stretch; gap: 32px; }
+      .success-text { align-items: flex-end; }
+      .success-illustration { width: 100%; max-width: 380px; align-self: center; }
+    }
+
+    @media (max-width: 480px) {
+      .site-header { padding: 8px 16px; gap: 16px; }
+      .page-content { padding: 16px 16px 40px; }
+      .section-header h1 { font-size: 20px; }
+      .back-link { margin-bottom: 20px; }
+      .businesses-card { padding: 12px 16px; }
+      .success-illustration { max-width: 260px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <img src="images/logo_bizgov.png" alt="ביזגוב" class="header-logo">
+  <div class="header-divider"></div>
+  <img src="images/government_emblem.svg" alt="מערך הדיגיטל הלאומי" class="header-emblem">
+</header>
+
+<!-- ===== STATE A: Default (form) ===== -->
+<div id="state-default">
+  <main class="page-content">
+
+    <a href="#" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M6.5 3.5L11 8L6.5 12.5" stroke="#0068F5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      חזרה לאיזור העסקי
+    </a>
+
+    <div class="section-header">
+      <h1>ניהול העדפות דיוור ועדכונים</h1>
+      <p>עדכונים מה<strong>אזור העסקי</strong> ו<strong>ביזגוב</strong> נועדו לסייע לך למצות את זכויותיך ולהתעדכן במכרזים, הטבות והקלות רגולטוריות.</p>
+      <hr aria-hidden="true">
+    </div>
+
+    <div class="two-col">
+
+      <!-- RIGHT column: businesses card + warning -->
+      <div class="col-businesses">
+
+        <div class="businesses-card" role="region" aria-label="העסקים שלך">
+          <h2>העסקים שלך</h2>
+          <hr aria-hidden="true">
+          <div class="biz-list">
+            <div class="biz-row">
+              <span class="biz-id">ח.פ: 512345678</span>
+              <span class="biz-name"> - מסעדת הים התיכון בע"מ</span>
+            </div>
+            <div class="biz-row">
+              <span class="biz-id">ח.פ: 614891234</span>
+              <span class="biz-name"> - ישראטק פתרונות טכנולוגיים</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="warning-box" role="alert">
+          <svg class="warning-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" stroke="#A35200" stroke-width="1.5"/>
+            <line x1="10" y1="6" x2="10" y2="11" stroke="#A35200" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="10" cy="13.5" r="1" fill="#A35200"/>
+          </svg>
+          <span><strong>לתשומת לבך! כל העסקים המוצגים יוסרו</strong> מרשימות התפוצה הנבחרות</span>
+        </div>
+
+      </div>
+
+      <!-- LEFT column — top: instruction + checkboxes -->
+      <div class="form-checkboxes">
+
+        <p class="instruction-text">
+          על מנת לעדכן את העדפות הדיוור יש לבחור מאיזו מערכת ברצונך להפסיק לקבל עדכונים:
+        </p>
+
+        <div class="checkboxes-group">
+          <label class="checkbox-item">
+            <input type="checkbox" id="cb-bizgov" name="unsubscribe" value="bizgov">
+            <span class="checkbox-label"><strong>ביזגוב</strong> (דוא"ל)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="cb-business" name="unsubscribe" value="business">
+            <span class="checkbox-label">איזור עסקי (דוא"ל, SMS, whatsapp)</span>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- LEFT column — bottom: reason dropdown + CTA -->
+      <div class="form-actions">
+
+        <div class="dropdown-group">
+          <label class="field-label" for="reason-select">
+            רגע לפני, נשמח לדעת מדוע ברצונך לעזוב, כדי ללמוד ולהשתפר:
+          </label>
+          <div class="select-wrapper">
+            <select id="reason-select" name="reason">
+              <option value="" disabled selected>למה ברצונך שנסיר אותך מהרשימה?</option>
+              <option value="too-many">יותר מדי הודעות</option>
+              <option value="not-relevant">התוכן לא רלוונטי עבורי</option>
+              <option value="privacy">סיבות פרטיות</option>
+              <option value="other">סיבה אחרת</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="button" class="btn-primary" onclick="showSuccess()">
+          הסרה מרשימת התפוצה
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- ===== STATE B: Success ===== -->
+<div id="state-success">
+  <main class="page-content">
+
+    <div class="success-row">
+
+      <div class="success-text">
+        <h1>הוסרת מרשימת התפוצה בהצלחה</h1>
+        <p>
+          לבקשתך, הוסרת מרשימת התפוצה של <strong>ביזגוב</strong>
+          ושל ה<strong>איזור העסקי</strong> ולא ישלח אליך דיוור נוסף מהם.
+        </p>
+        <a href="#" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6.5 3.5L11 8L6.5 12.5" stroke="#0068F5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          חזרה לאיזור העסקי
+        </a>
+      </div>
+
+      <img
+        src="images/person_illustration.png"
+        alt=""
+        class="success-illustration"
+        aria-hidden="true"
+      >
+
+    </div>
+
+  </main>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copy">© כל הזכויות שמורות למערך הדיגיטל הלאומי, 2025</span>
+    <img src="images/government_emblem.svg" alt="" class="footer-logo" aria-hidden="true">
+  </div>
+</footer>
+
+<script>
+  function showSuccess() {
+    document.getElementById('state-default').style.display = 'none';
+    document.getElementById('state-success').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
